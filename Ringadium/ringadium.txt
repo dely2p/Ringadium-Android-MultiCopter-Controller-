@@ -1,0 +1,59 @@
+1. MultiWii 핸들러
+2. Frsky 핸들러
+
+read setting(get)
+- radiomode
+- protocol(mw220)
+- mag mode(chattering)
+- text to speach       
+- mac address
+- mac address frsky
+- connect on start
+- advanced func
+- disable bt on exit
+- force language
+- periodic speaking
+- voltage alram
+- graphs to show
+- refresh rate
+- copy frsky to multiwii
+- app start counter
+- donate button pressed
+- reverse roll
+- map zoom level
+- map center period
+- communication type multiwii
+- serial port baud rate multiwii
+- serial port baud rate frsky
+- frsky support
+- no data receieved warning    
+
+
+save setting(put)
+- radiomode
+- protocol(mw220)
+- mag mode(chattering)
+- text to speach       
+- mac address
+- mac address frsky
+- connect on start
+//- advanced func
+- disable bt on exit
+- force language
+- periodic speaking
+- voltage alram
+- graphs to show
+- refresh rate
+- copy frsky to multiwii
+- app start counter
+- donate button pressed
+- reverse roll
+- map zoom level
+- map center period
+- communication type multiwii
+- serial port baud rate multiwii
+- frsky support
+- no data receieved warning   
+
+
+변속기란?

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:keepScreenOn="true"
+    android:layout_marginTop="50dp"
+    android:orientation="vertical" >
+	<Button
+		android:id="@+id/button1"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="5dp"
+		android:layout_weight="1"
+		android:background="@drawable/custom_button_yellow"
+		android:onClick="ConfigOnClick"
+		android:text="@string/Config" />
+
+	<Button
+		android:id="@+id/button2"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="5dp"
+		android:layout_weight="1"
+		android:background="@drawable/custom_button_yellow"
+		android:onClick="PIDOnClick"
+		android:text="@string/PID" />
+
+	<Button
+		android:id="@+id/button3"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="5dp"
+		android:layout_weight="1"
+		android:background="@drawable/custom_button_yellow"
+		android:onClick="AUXOnClick"
+		android:text="@string/SetCheckboxes" />
+
+	<Button
+		android:id="@+id/button4"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="5dp"
+		android:layout_weight="1"
+		android:background="@drawable/custom_button_yellow"
+		android:onClick="RCOnClick"
+		android:text="@string/Radio" />		
+
+</LinearLayout>

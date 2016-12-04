@@ -1,0 +1,154 @@
+/*  MultiWii EZ-GUI
+    Copyright (C) <2012>  Bartosz Szczygiel (eziosoft)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.ce.skuniv.Main;
+
+import nav.NavActivity;
+import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.media.AudioManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.actionbarsherlock.ActionBarSherlock;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
+import com.ce.skuniv.R;
+import com.ce.skuniv.about.AboutActivity;
+import com.ce.skuniv.advanced.AdvancedActivity;
+import com.ce.skuniv.app.App;
+import com.ce.skuniv.aux_pid.AUXActivity;
+import com.ce.skuniv.aux_pid.PIDActivity;
+import com.ce.skuniv.aux_pid.ServosActivity;
+import com.ce.skuniv.config.ConfigActivity;
+import com.ce.skuniv.dashboard.Dashboard11Activity;
+import com.ce.skuniv.dashboard.Dashboard2Activity;
+import com.ce.skuniv.dashboard.dashboard3.Dashboard3Activity;
+import com.ce.skuniv.frsky.FrskyActivity;
+import com.ce.skuniv.gps.GPSActivity;
+import com.ce.skuniv.gps.MOCK_GPS_Service;
+import com.ce.skuniv.graph.GraphsActivity;
+import com.ce.skuniv.helpers.Functions;
+import com.ce.skuniv.log.LogActivity;
+import com.ce.skuniv.motors.MotorsActivity;
+import com.ce.skuniv.other.CalibrationActivity;
+import com.ce.skuniv.other.MiscActivity;
+import com.ce.skuniv.radio.RadioActivity;
+import com.ce.skuniv.raw.RawDataActivity;
+import com.ce.skuniv.waypoints.MapWaypointsActivity;
+import com.ezio.sec.Sec;
+import com.ce.skuniv.joystic.JoystickView;
+import com.viewpagerindicator.TitlePageIndicator;
+import communication.BT_New;
+
+public class MainMultiWiiActivity extends SherlockActivity {
+	private boolean killme = false;
+	private App app;
+	TextView TVInfo;
+	ActionBarSherlock actionBar;
+	MyPagerAdapter adapter;
+
+	private final Handler mHandler = new Handler();
+	private final Handler mHandler1 = new Handler() {
+		// BinaryFileAccess file = new
+		// BinaryFileAccess("/MultiWiiLogs/dump1.txt", true);
+
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case BT_New.MESSAGE_STATE_CHANGE:
+				Log.i("ccc", "MESSAGE_STATE_CHANGE: " + msg.arg1);
+
+				switch (msg.arg1) {
+				case BT_New.STATE_CONNECTED:
+					// setStatus("Connected");
+					break;
+				case BT_New.STATE_CONNECTING:
+					setStatus(getString(R.string.Connecting));
+					break;
+				case BT_New.STATE_NONE:
+					break;
+				}
+
+				break;
+			case BT_New.MESSAGE_WRITE:
+				break;
+			case BT_New.MESSAGE_READ:
+				// byte[] readBuf = (byte[]) msg.obj;
+				// String readMessage = new String(readBuf, 0, msg.arg1);
+				// //file.WriteBytes(readBuf);
+
+				break;
+			case BT_New.MESSAGE_DEVICE_NAME:
+				String deviceName = msg.getData().getString(BT_New.DEVICE_NAME);
+				setStatus(getString(R.string.Connected) + "->" + deviceName);
+				Log.d("ccc", "Device Name=" + deviceName);
+				break;
+			case BT_New.MESSAGE_TOAST:
+				Log.i("ccc", "MESSAGE_TOAST:" + msg.getData().getString(BT_New.TOAST));
+				Toast.makeText(getApplicationContext(), msg.getData().getString(BT_New.TOAST), Toast.LENGTH_SHORT).show();
+				break;
+			}
+		}
+	};
+
+	private final void setStatus(String message) {
+		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+	}
+
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		
+        joystick = (JoystickView)findViewById(R.id.joystickView);
+        
+        joystick.setOnJostickMovedListener(_listener);
+	
+ 
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if (mBluetoothAdapter == null) {
+            finishDialogNoBluetooth();
+            return;
+        }
+
+        mSerialService = new BluetoothSerialService(this, mHandlerBT);  
+	}
+
+	
+}
